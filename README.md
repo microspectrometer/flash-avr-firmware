@@ -1,5 +1,9 @@
 # Dev-kit programming
 
+## Setup
+
+See https://microspectrometer.github.io/flash-avr-firmware/
+
 ## Overview
 
 Use `make` to program:
