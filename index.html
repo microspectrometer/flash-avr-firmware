@@ -193,6 +193,16 @@ Error message and password prompt
 
 <li>Firmware Programming Setup</li>
 
+<li>FT_PROG algorithm details</li>
+
+<li>FT_PROG devscan parser</li>
+
+<li>FT_PROG Makefile details</li>
+
+<li>FT_PROG XML Template File</li>
+
+<li>Program FTDI Chips with FT_PROG</li>
+
 <li>Use AtmelStudio</li>
 
 <li>Use Standalone Tools</li>
@@ -9409,14 +9419,15 @@ Error message and password prompt
     }
 }</pre>
 </div>
-<div created="20200114173010142" modified="20200708193305113" title="$:/DefaultTiddlers">
-<pre>[[Use AtmelStudio]]
-[[Firmware Programming Setup]]</pre>
+<div created="20200114173010142" modified="20200709145749748" title="$:/DefaultTiddlers">
+<pre>[[Dev kit USB device driver]]
+[[Use AtmelStudio]]
+[[Program FTDI Chips with FT_PROG]]</pre>
 </div>
 <div status="complete" title="$:/Import">
 <pre>The following tiddlers were imported:
 
-# [[Download and install ATmega DFP]]</pre>
+# [[FT_PROG XML Template File]]</pre>
 </div>
 <div title="$:/isEncrypted">
 <pre>no</pre>
@@ -9558,13 +9569,13 @@ very-muted-foreground: #2d3038
 <div created="20200114175417837" modified="20200114175417837" title="$:/state/tab-2065006209">
 <pre>$:/core/ui/ControlPanel/Saving/GitHub</pre>
 </div>
-<div created="20200305154346384" modified="20200708192918601" title="$:/state/tab/moresidebar-1850697562">
+<div created="20200305154346384" modified="20200709145653364" title="$:/state/tab/moresidebar-1850697562">
 <pre>$:/core/ui/MoreSideBar/All</pre>
 </div>
-<div created="20200114172918836" modified="20200708193247511" title="$:/state/tab/sidebar--595412856">
+<div created="20200114172918836" modified="20200709145657662" title="$:/state/tab/sidebar--595412856">
 <pre>$:/core/ui/SideBar/Open</pre>
 </div>
-<div list="[[Use AtmelStudio]] [[Firmware Programming Setup]]" title="$:/StoryList">
+<div list="[[Dev kit USB device driver]] [[Use AtmelStudio]] [[Program FTDI Chips with FT_PROG]]" title="$:/StoryList">
 <pre></pre>
 </div>
 <div plugin-type="info" title="$:/temp/info-plugin" type="application/json">
@@ -9580,19 +9591,19 @@ very-muted-foreground: #2d3038
         },
         &quot;$:/info/url/full&quot;: {
             &quot;title&quot;: &quot;$:/info/url/full&quot;,
-            &quot;text&quot;: &quot;file:///C:/cygwin64/home/mike/tiddlywiki/flash-avr-firmware/index.html&quot;
+            &quot;text&quot;: &quot;https://microspectrometer.github.io/flash-avr-firmware/&quot;
         },
         &quot;$:/info/url/host&quot;: {
             &quot;title&quot;: &quot;$:/info/url/host&quot;,
-            &quot;text&quot;: &quot;&quot;
+            &quot;text&quot;: &quot;microspectrometer.github.io&quot;
         },
         &quot;$:/info/url/hostname&quot;: {
             &quot;title&quot;: &quot;$:/info/url/hostname&quot;,
-            &quot;text&quot;: &quot;&quot;
+            &quot;text&quot;: &quot;microspectrometer.github.io&quot;
         },
         &quot;$:/info/url/protocol&quot;: {
             &quot;title&quot;: &quot;$:/info/url/protocol&quot;,
-            &quot;text&quot;: &quot;file:&quot;
+            &quot;text&quot;: &quot;https:&quot;
         },
         &quot;$:/info/url/port&quot;: {
             &quot;title&quot;: &quot;$:/info/url/port&quot;,
@@ -9600,7 +9611,7 @@ very-muted-foreground: #2d3038
         },
         &quot;$:/info/url/pathname&quot;: {
             &quot;title&quot;: &quot;$:/info/url/pathname&quot;,
-            &quot;text&quot;: &quot;/C:/cygwin64/home/mike/tiddlywiki/flash-avr-firmware/index.html&quot;
+            &quot;text&quot;: &quot;/flash-avr-firmware/&quot;
         },
         &quot;$:/info/url/search&quot;: {
             &quot;title&quot;: &quot;$:/info/url/search&quot;,
@@ -9608,7 +9619,7 @@ very-muted-foreground: #2d3038
         },
         &quot;$:/info/url/origin&quot;: {
             &quot;title&quot;: &quot;$:/info/url/origin&quot;,
-            &quot;text&quot;: &quot;file://&quot;
+            &quot;text&quot;: &quot;https://microspectrometer.github.io&quot;
         },
         &quot;$:/info/browser/screen/width&quot;: {
             &quot;title&quot;: &quot;$:/info/browser/screen/width&quot;,
@@ -9625,8 +9636,8 @@ very-muted-foreground: #2d3038
     }
 }</pre>
 </div>
-<div created="20200115143050032" modified="20200305155236334" title="$:/temp/search">
-<pre></pre>
+<div created="20200115143050032" modified="20200709144939230" title="$:/temp/search">
+<pre>Program</pre>
 </div>
 <div author="JeremyRuston" core-version="&gt;=5.0.0" dependents="$:/themes/tiddlywiki/vanilla" description="Emphasises individual tiddlers" name="Snow White" plugin-priority="0" plugin-type="theme" title="$:/themes/tiddlywiki/snowwhite" type="application/json" version="5.1.21">
 <pre>{
@@ -10113,6 +10124,626 @@ Using `make` also gives flexibility. The single `make` invocation for flash incl
 * log to file the timestamp when this kit was flashed
 * set up the directory structure and an empty checklist for the QC steps the kit requires
 </pre>
+</div>
+<div created="20200418205813164" modified="20200418210133788" tags="[[Program FTDI Chips with FT_PROG]]" title="FT_PROG algorithm details" type="application/x-tiddler">
+<pre>//The user is in the top-level folder of the repo where `ftcfg.xml` is.//
+
+1. Do a scan and write the results to temporary file `devscan`
+
+```bash
+$ ftprog scan &gt; devscan
+```
+
+Example of a `devscan` file:
+
+```
+Scanning for devices...
+Device 0: FT X Series, ChromationSpect-0911-03, CHROMATION091103
+```
+
+2. Parse `devscan`
+
+See parsing implementation in [[FT_PROG devscan parser]].
+
+* Build stops if:
+** ''multiple devices'' are `FT X Series`
+*** tell the user to make sure only one dev kit is connected
+** ''no devices'' are `FT X Series`
+*** tell the user to connect the dev kit
+* Build continues if:
+* ''exactly one device'' is `FT X Series`
+** get serial number
+** check if `kit/serial-number/ftcfg.xml` exists or is an old number
+*** if we never programmed the EEPROGM, the serial-number will be something generic from FTDI and it will not exist
+*** if this is a kit we programmed in the recent past (i.e., with `make` automation):
+**** `kit/serial-number/ftcfg.xml` exists
+**** remember this serial number for the rest of the build
+**** skip //Program EEPROM//
+*** if this is a kit we programmed in the distant past:
+**** it will have a valid and meaningful serial-number that we do ''not'' want to erase
+**** EEPROM was programmed manually through the GUI, so the `ftcfg.xml` file will not exist
+**** the serial number is ''old'' if it is less than some value
+**** use this as the serial number from here forward
+**** make a sub-folder with this number in the `kits` folder
+**** skip //Program EEPROM//
+*** user can still repurpose an old kit with `make erase-kitnum`
+**** this replaces the serial number with something generic
+*** user runs `make flash` again
+** so, skip //Program EEPROM// if:
+*** file exists (was programmed recently)
+*** serial number is old (programmed in the distant past)
+** otherwise, get Device number and proceed to //Program EEPROM//
+
+3. Program EEPROM:
+
+//Example:// device number is 0
+
+Write to EEPROM:
+
+```
+$ ftprog prog 0 `kit/serial-number/ftcfg.xml`
+```
+
+Cycle the USB port:
+
+```
+$ ftprog cycl 0
+```
+
+4. Check the serial number was updated
+
+```
+$ ftprog scan &gt; devscan
+```
+
+Parse `devscan` to see that the serial number is correct.
+
+//Reference://
+
+See https://docs.microsoft.com/en-us/azure-sphere/hardware/mt3620-mcu-program-debug-interface#step-by-step-instructions-for-eeprom-programming
+</pre>
+</div>
+<div created="20200418210024035" modified="20200709145356158" title="FT_PROG devscan parser" type="application/x-tiddler">
+<pre>```bash
+#!/usr/bin/bash
+
+# Count the number of USB-connected 'FT X Series' devices.
+devcnt=$(grep 'FT X Series' devscan -c)
+
+# FAIL if the number of devices is not 1.
+if [ $devcnt -eq 0 ]
+then
+    echo FAIL: No devices found!
+    return -1
+else
+    grep 'FT X Series' devscan | cat
+    if [ $devcnt -gt 1 ]
+    then
+        echo FAIL: More than one device found.
+        return $devcnt
+    else
+        echo OK: One device found.
+        return 0
+    fi
+fi
+```</pre>
+</div>
+<div created="20200418204444227" modified="20200418205510529" tags="[[Program FTDI Chips with FT_PROG]]" title="FT_PROG Makefile details" type="application/x-tiddler">
+<pre>! FT:&gt;scan
+
+With this in my `~/.bashrc`:
+
+```bash
+# Run FT_PROG command line from bash with command `ftprog`
+ftdi=&quot;/cygdrive/c/Program Files (x86)/FTDI/FT_Prog/FT_Prog-CmdLine.exe&quot;
+alias ftprog='&quot;$ftdi&quot;'
+export ftdi
+```
+
+The command line invocation is
+
+```bash
+$ ftprog scan
+```
+
+So my first attempt in `make` was this:
+
+```make
+.PHONY: scan
+scan:
+	ftprog scan
+```
+
+But `make` only looks in /usr/bin. It does not know to evaluate `ftprog` as an alias. Adding `export ftprog` to ~/.bashrc does not help. Instead, `export ftdi` (the path to the executable) and call the executable by telling make to output `&quot;$ftdi&quot;` to the shell.
+
+```make
+.PHONY: scan
+scan:
+	&quot;$$ftdi&quot; scan
+```
+
+The double `$` is to escape the `$`, otherwise `make` would try to evaluate `$f` with `f` as a variable, which is empty, so I end up sending `tdi scan` to the shell.
+
+With `scan` working from `make`, my next step is to output this to a file for parsing.
+
+The simple `&gt;` works.
+
+```make
+.PHONY: scan
+scan:
+	&quot;$$ftdi&quot; scan &gt; devscan
+```
+
+But if FT_PROG throws an error, i.e., if it returns a non-zero value, `make` receives that error and exits the build.
+
+For example, if FT_PROG finds no devices, it considers that an error, so it returns some non-zero value. This &quot;no devices found&quot; error is not an error for me. I don't want this to cause `make` to stop.
+
+Swallow the error by piping the output to `cat` first. This has the added benefit of cleaning the `^M` Windows newlines out of the file.
+
+```make
+.PHONY: scan
+scan:
+	&quot;$$ftdi&quot; scan | cat &gt; devscan
+```
+</pre>
+</div>
+<div created="20200418194744739" modified="20200418194814318" tags="[[Program FTDI Chips with FT_PROG]]" title="FT_PROG XML Template File" type="application/x-tiddler">
+<pre>```xml
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot;?&gt;
+&lt;FT_EEPROM&gt;
+  &lt;Chip_Details&gt;
+    &lt;Type&gt;FT X Series&lt;/Type&gt;
+  &lt;/Chip_Details&gt;
+  &lt;USB_Device_Descriptor&gt;
+    &lt;VID_PID&gt;0&lt;/VID_PID&gt;
+    &lt;idVendor&gt;0403&lt;/idVendor&gt;
+    &lt;idProduct&gt;6015&lt;/idProduct&gt;
+    &lt;bcdUSB&gt;USB 2.0&lt;/bcdUSB&gt;
+  &lt;/USB_Device_Descriptor&gt;
+  &lt;USB_Config_Descriptor&gt;
+    &lt;bmAttributes&gt;
+      &lt;RemoteWakeupEnabled&gt;false&lt;/RemoteWakeupEnabled&gt;
+      &lt;SelfPowered&gt;false&lt;/SelfPowered&gt;
+      &lt;BusPowered&gt;true&lt;/BusPowered&gt;
+    &lt;/bmAttributes&gt;
+    &lt;IOpullDown&gt;false&lt;/IOpullDown&gt;
+    &lt;MaxPower&gt;90&lt;/MaxPower&gt;
+  &lt;/USB_Config_Descriptor&gt;
+  &lt;USB_String_Descriptors&gt;
+    &lt;Manufacturer&gt;CH&lt;/Manufacturer&gt;
+    &lt;Product_Description&gt;ChromationSpect-0911-03&lt;/Product_Description&gt;
+    &lt;SerialNumber_Enabled&gt;true&lt;/SerialNumber_Enabled&gt;
+    &lt;SerialNumber&gt;CHROMATION091103&lt;/SerialNumber&gt;
+    &lt;SerialNumberPrefix&gt;CH&lt;/SerialNumberPrefix&gt;
+    &lt;SerialNumber_AutoGenerate&gt;false&lt;/SerialNumber_AutoGenerate&gt;
+  &lt;/USB_String_Descriptors&gt;
+  &lt;Hardware_Specific&gt;
+    &lt;USB_Suspend_VBus&gt;false&lt;/USB_Suspend_VBus&gt;
+    &lt;Port_A&gt;
+      &lt;Hardware&gt;
+        &lt;Device&gt;FT220X/FT221X (FT1248)&lt;/Device&gt;
+      &lt;/Hardware&gt;
+      &lt;Driver&gt;
+        &lt;D2XX&gt;true&lt;/D2XX&gt;
+        &lt;VCP&gt;false&lt;/VCP&gt;
+      &lt;/Driver&gt;
+    &lt;/Port_A&gt;
+    &lt;Battery_Charge_Detect&gt;
+      &lt;Enable&gt;false&lt;/Enable&gt;
+      &lt;Power_Enable&gt;false&lt;/Power_Enable&gt;
+      &lt;Deactivate_Sleep&gt;false&lt;/Deactivate_Sleep&gt;
+    &lt;/Battery_Charge_Detect&gt;
+    &lt;FT1248_Settings&gt;
+      &lt;Clock_Polarity&gt;false&lt;/Clock_Polarity&gt;
+      &lt;Bit_Order&gt;true&lt;/Bit_Order&gt;
+      &lt;Flow_Control&gt;true&lt;/Flow_Control&gt;
+    &lt;/FT1248_Settings&gt;
+    &lt;CBUS_Signals&gt;
+      &lt;C3&gt;GPIO&lt;/C3&gt;
+    &lt;/CBUS_Signals&gt;
+    &lt;IO_Pins&gt;
+      &lt;DBUS&gt;
+        &lt;SlowSlew&gt;false&lt;/SlowSlew&gt;
+        &lt;Schmitt&gt;false&lt;/Schmitt&gt;
+        &lt;Drive&gt;4mA&lt;/Drive&gt;
+      &lt;/DBUS&gt;
+      &lt;CBUS&gt;
+        &lt;SlowSlew&gt;false&lt;/SlowSlew&gt;
+        &lt;Schmitt&gt;false&lt;/Schmitt&gt;
+        &lt;Drive&gt;4mA&lt;/Drive&gt;
+      &lt;/CBUS&gt;
+    &lt;/IO_Pins&gt;
+  &lt;/Hardware_Specific&gt;
+&lt;/FT_EEPROM&gt;
+```</pre>
+</div>
+<div created="20200418044930394" modified="20200422061533929" tags="[[Firmware Programming Setup]]" title="Program FTDI Chips with FT_PROG" type="application/x-tiddler">
+<pre>! Quick guide
+
+!! Setup
+
+* install FT_PROG
+* edit `~/.bashrc`:
+** //create// variable `ftdi`
+** //export// `ftdi`
+
+```bash
+# Run FT_PROG command line from bash with command `ftdi`
+ftdi=&quot;/cygdrive/c/Program Files (x86)/FTDI/FT_Prog/FT_Prog-CmdLine.exe&quot;
+export ftdi
+alias ftprog='&quot;$ftdi&quot;'
+```
+
+!! Program FTDI chip
+
+* open `bash`
+* `cd` into the `dev-kit-2019` repo
+* connect a dev-kit over USB
+** //only one dev kit// is connected over USB
+** //Atmel-ICE// is not connected over USB
+* run `make kitnum` to make an XML configuration
+** input the last two digits of the serial number
+** start with `01`
+* run `make progkitnum` to program EEPROM
+** input the complete serial number
+
+//Example:// First pick the serial number.
+
+```bash
+$ make kitnum
+
+Serial number: 1182-XX
+Enter two digits to replace XX
+(use 01 for the first kit of the day)
+XX: 03
+Using serial number: 1182-03
+Created new FTDI EEPROM XML to program kit serial number
+        Serial number for LabVIEW GUI: ChromationSpect-1182-03
+        Serial number for Python API: CHROMATION118203
+```
+
+//The first four digits// are `1182` because I made this example on ''2020-04-21''. //It is the number of days since 2017-01-25.//
+
+// The last two digits// are `03` because this is the third kit I made today. //Just testing this system, I didn't actually make any kits.//
+
+This first step:
+
+* creates folder `./kit/1182-03/`
+* places an XML configuration file in that folder
+
+Now write the configuration to the EEPROM.
+
+```bash
+$ make progkitnum
+
+Checking only one FT X Series is USB-connected...
+Device 0: FT X Series, ChromationSpect-1182-01, CHROMATION118201
+OK: One device found.
+
+Enter ENTIRE kit serial number, for example: 1182-01
+XXXX-XX: 1182-03
+
+Looking for ./kits/1182-03/ftcfg.xml...
+OK: ./kits/1182-03/ftcfg.xml exists.
+
+Programming EEPROM...
+Scanning for devices...
+Device 0: FT X Series, ChromationSpect-1182-01, CHROMATION118201
+Re-enumerating Device 0....
+Scanning for devices...
+Device 0: FT X Series, ChromationSpect-1182-01, CHROMATION118201
+Device 0 programmed successfully!
+Finished
+
+Re-enumerating Device 0....
+Scanning for devices...
+Device 0: FT X Series, ChromationSpect-1182-03, CHROMATION118203
+Double-check the serial number on the line above is 1182-03.
+```
+
+//There is a lot of &quot;Scanning for devices&quot;. This is redundant at the command line, but required by the bash script. When running from a script, these extra scans are a workaround to get the FT_PROG command line utility to accept the device number as an input argument to the `cycl` and `prog` commands.//
+
+! Download and install
+
+Download ''FT_PROG'' from
+
+https://www.ftdichip.com/Support/Utilities.htm#FT_PROG
+
+The downloaded file is `FT_Prog_v3.6.88.402 Installer.exe`
+
+Double-click to install. Let it install to the default path:
+
+```
+C:\Program Files (x86)\FTDI\FT_Prog
+```
+
+Let it make a desktop shortcut if you want to use the GUI.
+
+Installation is very fast.
+
+! Make aliases
+
+The single download contains both a GUI and a command line application.
+
+As of 2020-04-18, I invoke ''FT_PROG'' from a Makefile and it automatically configures the dev kit.
+
+But it is also useful to run ''FT_PROG'' interactively.
+
+The desktop shortcut launches the GUI. The GUI has an icon to launch the command line program.
+
+I do not use the GUI anymore. Instead, I launch the command line application from Cygwin.
+
+!! Make an alias for use from bash
+
+Add this to `~/.bashrc`:
+
+```bash
+# Run FT_PROG command line from bash with command `ftprog`
+ftdi=&quot;/cygdrive/c/Program Files (x86)/FTDI/FT_Prog/FT_Prog-CmdLine.exe&quot;
+alias ftprog='&quot;$ftdi&quot;'
+export ftdi
+```
+
+* The `alias` is for running FT_PROG interactively from the command line with `ftprog`.
+
+* The `export` is for invoking FT_PROG from the `make` recipe with `&quot;$$ftdi&quot;`.
+
+!! Make an alias for use from PowerShell
+
+This is not necessary, but it gives me the ability to use the same `ftprog` command to run the application from PowerShell.
+
+Add this alias to `$PROFILE`:
+
+```powershell
+Set-Alias -Name ftprog -Value &quot;C:\Program Files (x86)\FTDI\FT_Prog\FT_Prog-CmdLine.exe&quot;
+```
+
+!! Test the aliases
+
+In bash:
+
+```bash
+$ ftprog
+FT:&gt; exit
+```
+
+In PowerShell:
+
+```powershell
+&gt; ftprog
+FT:&gt; exit
+```
+
+The two are identical because the `~/.bashrc` alias and the `$PROFILE` alias both point to the same native Windows executable, `FT_Prog-CmdLine.exe`.
+
+! Test the setup
+
+Hardware:
+
+* connect the dev-kit USB cable to the computer
+* ''disconnect'' the ''Atmel-ICE'' USB cable
+** it is good to connect ''Atmel-ICE'' via a [[USB hub with switches|https://www.newegg.com/sabrent-hb-um43-usb/p/N82E16817366063?Description=usb%20hub%20sabrent&amp;cm_re=usb_hub_sabrent-_-17-366-063-_-Product&amp;quicklink=true]] to make this easier
+** while programming the EEPROM on the FTDI chip, it does not matter if the ''Atmel-ICE'' is not powered while it is connected to the dev-kit
+** when using the dev-kit later (after it is programmed and everything), the Atmel-ICE interferes with dev kit SPI communication if it is connected but not powered
+
+//Example 1:// scan with one finished dev-kit attached
+
+Open a bash terminal, run `FT_Prog-CmdLine.exe`, then `scan` for devices:
+
+```bash
+$ ftprog
+FT:&gt;scan
+Scanning for devices...
+Device 0: FT X Series, ChromationSpect-0911-03, CHROMATION091103
+```
+
+//The dev-kit is the only attached FTDI device.//
+
+//Example 2:// scan with two dev-kits attached: one finished, and one not programmed yet:
+
+```bash
+$ ftprog
+FT:&gt;scan
+Scanning for devices...
+Device 0: FT X Series, ChromationSpect-0911-03, CHROMATION091103
+Device 1: FT X Series, FT221X 8-BIT FT1248, DB005S7I
+```
+
+//Device 1 EEPROM has the default values from FTDI.//
+
+//Example 3:// scan with the ''Atmel-ICE'' attached:
+
+```
+FT:&gt;scan
+Scanning for devices...
+
+Unhandled Exception: System.AccessViolationException: Attempted to read or write protected memory. This is often an indication that other memory is corrupt.
+   at FT260_NET.FTDI.EEPROM_Init(Byte address, FT260PROG_EEPROM_TYPE eepromType)
+   at FT_Prog.ScanDevice.ScanForDevices(List`1&amp; deviceList, UpdateReadProgressDelegate status)
+   at FT_Prog_CmdLine.commandClass.scanCommandHandler()
+   at FT_Prog_CmdLine.commandClass.selectCommand(Stringcommand, String[] arguments)
+   at FT_Prog_CmdLine.commandClass.readCommand(String[]args)
+   at FT_Prog_CmdLine.Program.Main(String[] args)
+Segmentation fault
+```
+
+//If the ''Atmel-ICE'' is connected over USB, expect `scan` results in an error like this.//
+
+! Program the EEPROM with `make`
+
+Enter the repo directory.
+
+```
+$ cd ~/chromation/dev-kit-2019/
+```
+
+Scan for connected devices.
+
+```
+$ make scan
+Scanning connected USB devices...
+FAIL: No devices found!
+make: *** [Makefile:79: scan] Error 255
+```
+
+No devices are attached:
+
+* I decided `make` should throw an error if I consider the result a `FAIL`
+* `make` exits with `Error 255`
+** I chose `255` to indicate no devices attached
+** I could not use `0` because that is the traditional code for `OK`
+** `255` is the largest possible error code
+
+```
+$ make scan
+Scanning connected USB devices...
+Device 0: FT X Series, ChromationSpect-0911-03, CHROMATION091103
+Device 1: FT X Series, FT221X 8-BIT FT1248, DB005S7I
+FAIL: More than one device found.
+make: *** [Makefile:79: scan] Error 2
+```
+
+Two dev-kits are attached:
+
+* `make` exits with `Error 2`, the `2` indicating the two dev-kits
+** `Device 0` is ''already programmed''
+** `Device 1` is ''not programmed'' yet
+* //I want to program// `Device 1`
+* ''disconnect'' `Device 0`
+* ''scan'' again
+
+```
+$ make scan
+Scanning connected USB devices...
+Device 0: FT X Series, FT221X 8-BIT FT1248, DB005S7I
+OK: One device found.
+```
+
+* `make` exits without error (the return value is `0`)
+
+//One device found. It is safe to proceed with programming the EEPROM.//
+
+Get a serial number:
+
+```
+$ make kitnum
+Serial number: 1181-XX
+Enter two digits to replace XX
+(use 01 for the first kit of the day)
+XX: 01
+Using serial number: 1181-01
+```
+
+The serial number is six decimal digits: XXXX-XX
+
+* the first four digits indicate a date encoded as:
+** the number of days since 2017-01-25
+** left-padded with zeros
+* the next two digits enumerate the kit on that day
+** the first kit made on that day is -01
+** the second kit is -02
+** the 99th kit is -99
+
+This `make kitnum` also has side effects:
+
+* create a folder `kits/1181-01` if the folder does not already exist
+* copy `ftcfg.xml` to `kits/1181-01`
+* replace serial number in `ftcfg.xml` with serial number `1181-01`
+
+! Develop a script to program the EEPROM
+
+Use the GUI to generate a [[FT_PROG XML Template File]].
+
+//This guarantees the template file is valid and will not corrupt the EEPROM.//
+
+* set the desired configuration
+* click the save icon
+* save as `ftcfg.xml` at the top-level of the repo where the top-level Makefile is
+
+When programming flash, `make` checks if a `kits/serial-number/ftcfg.xml` files already exists. If not, then the recipe to build this:
+
+* copies `ftcfg.xml` to the `kits` folder in the serial number subfolder
+* replaces the placeholder serial number with the correct serial number
+
+!! Details
+
+See [[FT_PROG Makefile details]] to see how the command line commands convert to `make` recipes.
+
+!! The algorithm
+
+See [[FT_PROG algorithm details]] to see what `make` does to automate the process of prgramming the FTDI EEPROM.
+
+! There is also a GUI
+
+Double-click the desktop shortcut to open the GUI.
+
+I used to use the GUI exclusively. The problem with this is it is tedious and there are many small steps, easy to miss one.
+
+I still use the GUI to generate the template `ftcfg.xml`. The Makefile uses this template file to program the FTDI EEPROM.
+
+!! Find the dev kit
+
+//Scan and parse//: press `F5` or click the ''magnifying glass icon''.
+
+//Expect:// Within a few seconds, a device shows up. All is good.
+
+If the scan runs for a long time and eventually the GUI closes, something is wrong. 
+
+//Troubleshoot:// make sure the Atmel-ICE is ''not'' connected over USB
+
+!! Configure using the `FT_Prog` GUI
+* Expand `USB String Descriptors`
+** change `Manufacturer`:
+*** //from// `FTDI`
+*** //to// `CH`
+*** ''CH'' is for //Chromation//
+** check the box `Serial Number Enabled`
+** uncheck the box `Auto Generate Serial Number`
+** change `Product Descr` to use the dev kit serial number in this format:
+*** `ChromationSpec-XXXX-XX`
+** Change the `Serial Number` to use the dev kit serial number in this format:
+*** `CHROMATIONXXXXXX`
+** if the serial number is not known, use:
+*** `ChromationSpect-0000-00`
+*** `CHROMATION000000`
+* Expand `Hardware Specific`
+* Expand `FT1248 settings`
+** Check/uncheck the three boxes as follows:
+*** `Clock Polarity High`: *unchecked*
+*** `Bit Order LSB`: *checked*
+*** `Flow Ctrl not selected`: *checked*
+* Expand `CBUS Signals`
+** change `C3`:
+*** //from// `Tristate`
+*** //to// `GPIO`
+
+When the spectrometer serial number is known:
+
+//This is old, I changed the name of this script.//
+
+```vim
+;nb serial_number_project
+
+:!clear;python3 ./example.py date=2019-2-20 &gt;&gt; /cygdrive/c/chromation-dropbox/Dropbox/python/dev/serial-number.md
+```
+
+//Note the `&gt;&gt;` to append rather than `&gt;` to overwrite.//
+
+The serial number format in `Product Description` uses the `XXXX-XX` format so that my LabVIEW code does not have to change.
+
+The serial number in `Serial Number` is for the Python API. When `pyserial` scans the USB ports, `grep` for the serial number to return a `port` object.
+
+//Example:// serial number in `Product Description`:
+
+```
+ChromationSpect-0643-01`
+```
+
+//Example:// serial number in `Serial Number`:
+
+```
+CHROMATION064301
+```</pre>
 </div>
 <div created="20200410175257954" modified="20200418192358146" tags="[[Firmware Programming Setup]]" title="Use AtmelStudio" type="application/x-tiddler">
 <pre>! Install AtmelStudio
